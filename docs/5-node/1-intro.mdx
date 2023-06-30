@@ -1,0 +1,45 @@
+# Introduction
+
+Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient. Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
+
+Think of it as running JavaScript in your terminal rather than in the browser.
+
+## Your First Node.js app
+
+Go back to the **root** of your project, and create a `backend` folder. This is where we will put all of our backend code.
+
+In here, create a file called `index.mjs`. This is the entry point of our application.
+
+:::note
+In this project, we'll use the `.mjs` extension for our JavaScript files. This is because we'll be using ES Modules, which is a new way of importing and exporting code. You can read more about it [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules).
+:::
+
+In this file, add the following code:
+
+```js
+console.log('Hello World!');
+```
+
+Now, in your terminal, run the following command:
+
+```bash
+node index.mjs
+```
+
+## Using npm
+
+Our application will use `npm` to manage our dependencies. `npm` is a package manager for JavaScript. It allows you to install and use third-party libraries in your application.
+
+Initialize `npm` in your `backend` folder by running the following command:
+
+```bash
+npm init -y
+```
+
+This will create a `package.json` file in your `backend` folder. This file will contain information about your application, as well as the dependencies that your application uses.
+
+## Using modules
+
+Node.js has a lot of built-in modules that you can use. For example, the `fs` module allows you to interact with the file system.
+
+You can also import modules from third-party libraries. For example, the `express` module allows you to create a web server.

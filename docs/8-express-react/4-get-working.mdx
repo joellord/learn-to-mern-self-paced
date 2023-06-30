@@ -1,0 +1,13 @@
+# Get working
+
+Time to get that last piece in place. You have a fully functional API, let's connect the front-end to it.
+
+Replace the hard-coded data in your component with a call to the API. You can use the `fetch` API to do this. You can use the following code to retrieve data from the API:
+
+```js
+fetch('http://localhost:5050/books')
+  .then(response => response.json())
+  .then(data => console.log(data));
+```
+
+Now use the `useState` and `useEffect` hooks to store the data in the component's state and render it to the screen.

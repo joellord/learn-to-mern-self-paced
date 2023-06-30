@@ -1,0 +1,113 @@
+# Using Forms
+
+Are you ready to use forms in your application? Let's get started!
+
+## Understanding forms in React
+
+Forms are a very important part of any web application. They allow users to input data and submit it. In React, working with and submitting forms is very similar to working with and submitting forms in HTML, but there are some key differences.
+
+In order to read and write the value of a form element, you will need to set those as state variables in your component. Everytime the field changes, you will need to change the state variable.
+
+This will be done in the `onChange` event handler. The `onChange` event handler will be called everytime the value of the input changes. The `onChange` event handler will be passed an event object as an argument. The event object will have a property called `target` which will have a property called `value` which will be the value of the input.
+
+Take a look at this example.
+
+```jsx live
+function Form() {
+  const [name, setName] = React.useState('');
+
+  function handleChange(event) {
+    setName(event.target.value);
+  }
+
+  return (
+    <form>
+      <label htmlFor="name">Name</label>
+      <input
+        id="name"
+        type="text"
+        value={name}
+        onChange={handleChange}
+      />
+      <div>Field value: {name}</div>
+    </form>
+  );
+}
+```
+
+## Submitting forms
+
+You're almost there. You will now need to submit that form using an `onClick` event handler. Once the event is triggered, you will need to send the data to your API. This will be done with the `fetch` function.
+
+Take a look at this example.
+
+```jsx live
+function Form() {
+  const [name, setName] = React.useState('');
+
+  function handleChange(event) {
+    setName(event.target.value);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    fetch('/api/items', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name }),
+    });
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="name">Name</label>
+      <input
+        id="name"
+        type="text"
+        value={name}
+        onChange={handleChange}
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+## Redirecting after submitting
+
+You will now need to redirect the user to another page after submitting the form. This will be done with the `useNavigate` hook. The `useNavigate` hook will return a `navigate` function that you can call to redirect the user to another page.
+
+In the component function, add a call to `useNavigate` to get the `navigate` function. Then, in the `handleSubmit` function, call the `navigate` function to redirect the user to the home page.
+
+```jsx
+function Form() {
+  const navigate = useNavigate();
+
+  function handleSubmit(event) {
+    // Send data to API
+    navigate('/');
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+
+## Build your own form
+
+You now have everything you need to build your own form. You will be building a form that allows users to submit a new  item. To do so, you will need the following.
+
+- Create a new route in `App.js` that renders a `NewItemForm` component.
+- Create a `NewItemForm` component that renders a form with the required fields.
+- In this form, use `useState` to create state variables for each field.
+- Create an `onChange` event handler for each field that updates the state variable.
+- Create an `onSubmit` event handler for the form that calls a function to submit the form.
+- Create a function that submits the form to your API.
+- Redirect the user to the home page after submitting the form.
+- Add a link to this new form from your home page.
+
+

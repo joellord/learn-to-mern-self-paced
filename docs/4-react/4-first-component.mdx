@@ -1,0 +1,67 @@
+# Your First Component
+
+Let's change this default page.
+
+## Changing the default page
+
+In the `App.js` file, change the `App()` function to look like this:
+
+```js
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <p>
+          Hello World!
+        </p>
+      </header>
+    </div>
+  );
+}
+```
+
+Now look at your browser. You should see the text "Hello World!".
+
+## Creating a component
+
+Let's create a component for this header.
+
+Start by creating a folder that will contain our components. In the `src` folder, create a new folder called `components`.
+
+Create a new file called `Header.js` in the `src/components` folder. Add the following code to it:
+
+```js
+import React from 'react';
+
+const Header = () => {
+  return (
+    <header className="App-header">
+      <p>
+        Hello World!
+      </p>
+    </header>
+  );
+}
+
+export default Header;
+```
+
+Now, in the `App.js` file, import the `Header` component and use it in the `App()` function:
+
+```js
+import React from 'react';
+import Header from './components/Header';
+
+function App() {
+  return (
+    <div className="App">
+      <Header />
+    </div>
+  );
+}
+
+export default App;
+```
+
+Now look at your browser. You should see the same thing again, but this time, we have our header in its own component. We can now reuse this header for all pages in our application, and if we want to change it, we only have to change it in one place.
+

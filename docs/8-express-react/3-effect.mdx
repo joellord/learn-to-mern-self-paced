@@ -1,0 +1,45 @@
+# React useEffect
+
+In order to run side effects on components, React provides a hook called `useEffect`. This hook is called after every render of the component. It can be used to run side effects like fetching data from an API or updating the document title.
+
+This hook is often used with the `useState` hook to update the state of the component after fetching data from an API.
+
+As an example, take this component that will render once, and then change the state after 2 seconds.
+
+```jsx live
+function App() {
+  const [state, setState] = useState("initial");
+
+  useEffect(() => {
+    setTimeout(() => {
+      setState("updated");
+    }, 2000);
+  }, []);
+
+  return <div>{state}</div>;
+}
+```
+
+The `useEffect` hook takes a function as its first argument. This function will be called after every render of the component. The second argument is an array of dependencies. If any of the dependencies change, the function will be called again. If the array is empty, the function will only be called once, after the first render.
+
+This can be useful for computed values. For example, if you want to compute the sum of two numbers, you can use the `useEffect` hook to update the sum whenever one of the numbers changes.
+
+```jsx live
+function App() {
+  const [a, setA] = useState(0);
+  const [b, setB] = useState(0);
+  const [sum, setSum] = useState(0);
+
+  useEffect(() => {
+    setSum(a + b);
+  }, [a, b]);
+
+  return (
+    <div>
+      <input value={a} onChange={(e) => setA(parseInt(e.target.value))} />
+      <input value={b} onChange={(e) => setB(parseInt(e.target.value))} />
+      <div>{sum}</div>
+    </div>
+  );
+}
+```

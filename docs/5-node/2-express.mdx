@@ -1,0 +1,65 @@
+# Express
+
+Express is a Node.js web application framework that provides a robust set of features for web and mobile applications.
+
+## Installation
+
+From `backend` folder, use npm to install express:
+
+```bash
+npm install express
+```
+
+You will also need to install CORS.
+
+```bash
+npm install cors
+```
+
+:::note
+Your browser won't let you make requests to a server that is not on the same domain. CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.
+:::
+
+## Create a GET route
+
+Create a file called `index.mjs` in the `backend` folder. This file will contain the code for your server.
+
+```js
+import express from "express";
+import cors from "cors";
+
+const app = express();
+const port = 5050;
+
+app.use(cors());
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
+```
+
+## Run the server
+
+From the `backend` folder, run the following command:
+
+```bash
+node index.mjs
+```
+
+You should see the following message in the console:
+
+```bash
+Example app listening at http://localhost:3000
+```
+
+:::tip
+You can also use `nodemon` to run the server. This will automatically restart the server when you make changes to the code.
+
+```bash
+nodemon index.mjs
+```
+:::

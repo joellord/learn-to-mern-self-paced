@@ -1,0 +1,13 @@
+# Adding data to MongoDB
+
+Before we connect to our MongoDB database, we need to add some data that we can query. We will do so using the Atlas UI.
+
+Navigate to your Database page, and click on "Browse Collections". From there, click on the "+" button at the top of the left panel to create a new collection.
+
+Give the new database and collection meaningful names. For example, I'll use `bookshelf` and `books` respectively.
+
+Once you've created the collection, click on the "Insert Document" button to add some data. You can copy and paste the array you were using in your application previously.
+
+:::note
+You will notice that MongoDB adds a `_id` field to your documents. This is the only mandatory field in MongoDB, and this field will automatically be indexed. From now on, we'll use `_id` instead of `id` or blindly using the array position.
+:::

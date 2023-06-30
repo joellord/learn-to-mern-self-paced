@@ -1,0 +1,202 @@
+# Solutions
+
+A little lazy, are you? Well, here are the solutions to the problems. At least, a possible solution. There are many ways to solve a problem, and these are just one of them.
+
+I like to start with the topmost parent, and work my way down so I can see the progress as I go. I also like to start with the layout, and then work my way down to the components. This is just a personal preference, and you can do it however you like.
+
+## App
+
+The `App.js` file is the topmost parent component. It is the component that will be rendered to the DOM. It is also the component that will hold all of the other components. This is the component that will be responsible for the layout of the page.
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```jsx title="/src/App.js"
+import Layout from './components/Layout';
+import Books from "./pages/Books";
+import './App.css';
+
+function App() {
+  return (
+    <Layout>
+      <Books />
+    </Layout>
+  );
+}
+
+export default App;
+```
+
+</div>
+</details>
+
+## Layout
+
+The `components/Layout.jsx` file is the component that will be responsible for the layout of the page. It will be the component that will hold the header and the footer. It will also be the component that will hold the main content of the page. Note how I'm using the `children` prop to render the main content of the page.
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```jsx title="/src/components/Layout.jsx"
+import React from "react";
+import Header from "./Header";
+import Footer from "./Footer";
+
+const Layout = ({ children }) => {
+  return (
+    <>
+      <Header />
+      <main>{children}</main>
+      <Footer />
+    </>
+  );
+}
+
+export default Layout;
+```
+
+</div>
+</details>
+
+## Header
+
+The `components/Header.jsx` file is the component that will be responsible for the header of the page.
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```jsx title="/src/components/Header.jsx"
+import React from "react";
+
+const Header = () => {
+  return (
+    <header>
+      <h1>Sample Books</h1>
+    </header>
+  );
+}
+
+export default Header;
+```
+
+</div>
+</details>
+
+## Footer
+
+The `components/Footer.jsx` file is the component that will be responsible for the footer of the page.
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```jsx title="/src/components/Footer.jsx"
+import React from "react";
+
+const Footer = () => {
+  return (
+    <footer>
+      <p>(c) {new Date().getFullYear}</p>
+    </footer>
+  );
+}
+
+export default Footer;
+```
+
+</div>
+</details>
+
+## Books
+
+The `pages/Books/index.jsx` file is the component that will be responsible for the main content of the page. It will be the component that will hold the list of books. Note how I'm using a constant to hold the list of books. Eventually, this will be replaced with a call to an API.
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```jsx title="/src/pages/Books/index.jsx"
+import React from "react";
+
+import Book from "./Book";
+
+const books = [
+  {
+    id: 0,
+    title: "The Alchemist",
+    author: "Paulo Coelho",
+    description: "A book about following your dreams",
+    pages: 163,
+    currentPage: 163,
+    read: true
+  },
+  {
+    id: 1,
+    title: "The Prophet",
+    author: "Kahlil Gibran",
+    description: "A story about a prophet",
+    pages: 107,
+    currentPage: 23,
+    read: false
+  },
+  {
+    id: 2,
+    title: "Thus Spoke Zarathustra",
+    author: "Friedrich Nietzsche",
+    description: "This book is about the fictitious travels and speeches of Zarathustra.",
+    pages: 352,
+    currentPage: 52,
+    read: false
+  }
+]
+
+const Books = () => {
+  return (
+    <div>
+      <h2>Books</h2>
+      {books.map((book, index) => {
+        return (
+          <Book key={index} {...book} />
+        )
+      })}
+    </div>
+  );
+}
+
+export default Books;
+```
+
+</div>
+</details>
+
+## Book
+
+The `pages/Books/Book.jsx` file is the component that will be responsible for displaying the information about a single book. Note how I'm using the spread operator to pass the properties of the book to the component.
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```jsx title="/src/pages/Books/Book.jsx"
+import React from "react";
+
+const Book = (props) => {
+  const { title, author, description, pages, currentPage, read } = props;
+  return (
+    <div>
+      <h3>{title}</h3>
+      <p>Author: {author}</p>
+      <p>Description: {description}</p>
+      <p>Pages: {pages}, currentPage: {currentPage}, read: {read ? "Yes" : "No"}</p>
+    </div>
+  )
+}
+
+export default Book;
+```
+
+</div>
+</details>

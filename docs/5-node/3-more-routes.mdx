@@ -1,0 +1,65 @@
+# Create more routes
+
+In express, you can create multiple routes in a single file. In this workshop, we'll build a REST server. REST stands for Representational State Transfer. It's a fancy way of saying that we'll be using HTTP methods to interact with our server. We'll be using the following HTTP methods:
+
+- GET: Retrieve data from the server
+- POST: Send data to the server
+- PUT: Update data on the server
+- DELETE: Delete data from the server
+
+Following the rest standard, we will use these verbs to interact with our data. For example, if we want to get all the users, we'll use the GET method on `/users`.
+
+If we want to get a specific user, we'll use the GET method on `/users/:id`. The `:id` is a parameter. It's a variable that we can use in our route. For example, if we want to get the user with the id 1, we'll use the route `/users/1`.
+
+To add a new user, we would use the POST method on `/users`. We'll send the data of the new user in the body of the request.
+
+## Create the GET route
+
+Let's create a new route to get all the users. We'll use the `get` method on the `app` object. The first argument is the route. The second argument is a callback function that will be called when the route is called. The callback function takes two arguments: the request and the response. The request contains all the information about the request. The response is used to send a response to the client.
+
+```js
+const movies = [{ id: 1, name: 'Inception' }, { id: 2, name: 'The Matrix' }];
+
+app.get('/movies', (req, res) => {
+  res.send(movies).status(200);
+});
+```
+
+## Create a GET route with a parameter
+
+We can also use parametrized routes. This would typically be used to retrieve a single entry for a collection.
+
+```js
+app.get('/movies/:id', (req, res) => {
+  const movie = movies.find((movie) => movie.id === parseInt(req.params.id));
+  if (!movie) {
+    return res.status(404).send('Movie not found');
+  }
+  res.send(movie).status(200);
+});
+```
+
+:::note
+Note how we used `parseInt` here to convert the parameter into a number. Parameters in Express are strings by default.
+:::
+
+## Create a POST route
+
+Let's create a route to add a new movie. We'll use the `post` method on the `app` object. The first argument is the route. The second argument is a callback function that will be called when the route is called. The callback function takes two arguments: the request and the response. The request contains all the information about the request. The response is used to send a response to the client.
+
+You will also need to add the middleware `express.json()` to your app. This will allow you to access the body of the request.
+
+```js
+app.use(express.json());
+
+app.post('/movies', (req, res) => {
+  const movie = {
+    id: movies.length + 1,
+    name: req.body.name,
+  };
+  movies.push(movie);
+  res.send(movie).status(201);
+});
+```
+
+

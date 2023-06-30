@@ -1,0 +1,123 @@
+# Solution
+
+<details>
+<summary>Click for solution</summary>
+<div>
+
+
+The `App.js` file with the new route.
+
+```jsx title="App.js"
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import Books from "./pages/Books";
+import Book from "./pages/Book";
+import New from "./pages/New";
+import './App.css';
+
+function App() {
+  return (
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/book/:bookId" element={<Book />} />
+          <Route path="/new" element={<New />} />
+          <Route path="/" element={<Books />} />
+        </Routes>
+      </Layout>
+    </Router>
+  );
+}
+
+export default App;
+```
+
+The new `New.js` file, which has the form.
+
+```jsx title="New.js"
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+
+function New () {
+
+  const [form, setForm] = useState({});
+  const navigate = useNavigate();
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleButtonSubmit = async (event) => {
+    event.preventDefault();
+    await fetch("http://localhost:5050/books", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(form)
+    });
+    return navigate("/");
+  };
+
+  return (
+    <>
+      <h2>Create new book</h2>
+      <form>
+        <label htmlFor="title">Title</label>
+        <input type="text" id="title" name="title" value={form.title} onChange={handleInputChange}/>
+        <br/>
+        <label htmlFor="author">Author</label>
+        <input type="text" id="author" name="author"  value={form.author} onChange={handleInputChange}/>
+        <br/>
+        <label htmlFor="description">Description</label>
+        <input type="text" id="description" name="description"  value={form.description} onChange={handleInputChange}/>
+        <br/>
+        <label htmlFor="pages">Pages</label>
+        <input type="number" id="pages" name="pages"  value={form.pages} onChange={handleInputChange}/>
+        <br/>
+        <button type="submit" onClick={handleButtonSubmit}>Create</button>
+      </form>
+    </>
+  )
+}
+
+export default New;
+```
+
+The `Books` component, which has a link to the new form.
+
+```jsx title="Books/index.jsx"
+import React, {useState, useEffect} from "react";
+import { Link } from "react-router-dom";
+import Book from "./Book";
+
+const Books = () => {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      const response = await fetch("http://localhost:5050/books").then(resp => resp.json());
+      setBooks(response);
+    };
+    fetchBooks();
+  }, []);
+
+  return (
+    <div>
+      <h2>Books</h2>
+      <Link to="/new">Create new book</Link>
+      {books.map((book, index) => {
+        return (
+          <Book key={index} {...book} />
+        )
+      })}
+    </div>
+  );
+}
+
+export default Books;
+```
+
+</div>
+</details>

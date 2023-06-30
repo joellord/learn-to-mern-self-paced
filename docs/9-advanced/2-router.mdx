@@ -1,0 +1,141 @@
+# Routing
+
+So far, we have a single page application that literally has a single page. Let's see how we can add multiple pages to our application.
+
+Here, we'll want to create a new page that lists the details of one item from our database. We'll also want to be able to navigate to this page from our home page.
+
+## Installing React Router
+
+React Router is a library that allows us to create multiple pages in our React application. It also allows us to navigate between these pages.
+
+To install React Router, run the following command:
+
+```bash
+npm install react-router-dom
+```
+
+## Add a Router
+
+To use React Router, we need to wrap our application in a `Router` component. This component is imported from `react-router-dom`. In the App.js file, we'll import this component and wrap our application in it.
+
+We will then change the content of the `Layout` children based on the URL. We'll use the `Routes` component to do this. This component takes a `path` prop and an `element` prop. The `path` prop is the URL that we want to match. The `element` prop is the content that we want to display when the URL matches the `path` prop.
+
+Note that we can use parametrized routes, just as we can in Express. We can use the `:` character to indicate a parameter. We can then access this parameter using the `useParams` hook.
+
+<details>
+<summary>Expand to see the code</summary>
+<div>
+
+```jsx title="src/App.js"
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import Books from "./pages/Books";
+import Book from "./pages/Book";
+import './App.css';
+
+function App() {
+  return (
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/book/:bookId" element={<Book />} />
+          <Route path="/" element={<Books />} />
+        </Routes>
+      </Layout>
+    </Router>
+  );
+}
+
+export default App;
+```
+
+</div>
+</details>
+
+:::note
+Here, we are importing a new component called `Book`. We'll create this component in the next section.
+:::
+
+## Creating a new page
+
+Let's create a new page that will show the details of a single item. Using my bookshelf example, I'll call this page `pages/Book/index.jsx`.
+
+This page uses `useState` and `useEffect` to fetch the data for a single book from the database. It uses `useParams` to get the `bookId` from the URL. It then uses this `bookId` to fetch the data for a single book from the database.
+
+<details>
+<summary>Expand to see the code</summary>
+<div>
+
+```jsx title="src/pages/Book/index.jsx"
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+
+function Book (props) {
+  const [book, setBook] = useState({});
+  const { bookId } = useParams();
+
+  useEffect(() => {
+    const fetchBook = async () => {
+      const response = await fetch(`http://localhost:5050/books/${bookId}`);
+      const data = await response.json();
+      setBook(data);
+    }
+    fetchBook();
+  }, [bookId]);
+
+  return (
+    <>
+      <h2>{book.title}</h2>
+
+      <p>Author: {book.author}</p>
+      <p>Description: {book.description}</p>
+      <p>Pages: {book.pages}</p>
+      <p>Read: {book.read ? 'Yes' : 'No'}</p>
+      {!book.read &&
+      <p>Current Page: {book.currentPage}</p>
+      }
+    </>
+  )
+}
+
+export default Book;
+```
+
+</div>
+</details>
+
+:::note
+This component is very similar to our `Books/Book.jsx` component. This is intentional. We'll change the latter in the next section.
+:::
+
+## Navigating to the new page
+
+Now that we have a new page, you could try it out by navigating to `http://localhost:3000/book/<BOOK_ID>`. However, you'll notice that there is no way to navigate to this page from the home page.
+
+Let's add a link to the home page that will take us to the new page. We can use the `Link` component from `react-router-dom` to do this. This component takes a `to` prop that is the URL that we want to navigate to.
+
+Let's change the `Books/Book.jsx` component to use this `Link` component, and only list the title and a link.
+
+<details>
+<summary>Expand to see the code</summary>
+<div>
+
+```jsx title="src/pages/Books/Book.jsx"
+import React from "react";
+import { Link } from "react-router-dom";
+
+const Book = (props) => {
+  const { title, _id } = props;
+  return (
+    <div>
+      <h3>{title}</h3>
+      <Link to={`/book/${_id}`}>View Book</Link>
+    </div>
+  )
+}
+
+export default Book;
+```
+</div>
+</details>
+

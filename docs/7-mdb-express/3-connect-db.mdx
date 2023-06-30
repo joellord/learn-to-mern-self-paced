@@ -1,0 +1,27 @@
+# Connecting to the database
+
+We'll be using the [MongoClient](https://mongodb.github.io/node-mongodb-native/api-generated/mongoclient.html) class to connect to our database.
+
+To do so, we'll create a new file called `utils/db.mjs`. This file will contain all the logic related to our database.
+
+```js title="src/utils/db.mjs"
+import { MongoClient } from "mongodb";
+
+const connectionString = process.env.CONN_STRING || "";
+const dbName = process.env.DB_NAME || "";
+
+const client = new MongoClient(connectionString);
+
+let conn;
+try {
+  conn = await client.connect();
+} catch(e) {
+  console.error(e);
+}
+
+let db = conn.db(dbName);
+
+export default db;
+```
+
+In there, you can see that we're using the `process.env` object to get the connection string and the database name. For the purpose of this workshop, you could hard-code these values in this `db.mjs` file.

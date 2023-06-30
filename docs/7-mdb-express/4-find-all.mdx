@@ -1,0 +1,23 @@
+# Retrieve all documents
+
+Let's now change the get route to retrieve all documents in the collection.
+
+First, you'll need to add the following dependencies.
+
+```js
+import db from "./utils/db";
+```
+
+Then, you can change the get route to the following.
+
+```js
+app.get("/books", async (req, res) => {
+  const books = await db.collection("books").find({}).toArray();
+  res.json(books).status(200);
+});
+```
+
+:::tip
+The callback function was changed to an async function here to use the `await` keyword. This is simpler, and more readble than using the `then` keyword.
+:::
+

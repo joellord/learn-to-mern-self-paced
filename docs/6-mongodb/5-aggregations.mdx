@@ -1,0 +1,110 @@
+# Aggregation Pipelines
+
+Sometimes, you need more that just a filter to query your data. You might want to perform some calculations on the data, or group the data in some way. This is where aggregation pipelines come in.
+
+## Aggregation Pipeline Stages
+
+Aggregation pipelines are a series of stages that are executed in order. Each stage takes the output of the previous stage and performs some operation on it. The output of the last stage is the result of the pipeline.
+
+### $match
+
+The `$match` stage is similar to the `find` method. It filters the documents in the pipeline based on the given criteria.
+
+```javascript
+[
+  { $match: { title: "The Godfather" } }
+]
+```
+
+### $project
+
+The `$project` stage is similar to the `select` method. It allows you to select which fields to include in the output.
+
+```javascript
+[
+  { $project: { title: 1, year: 1 } }
+]
+```
+
+### $sort
+
+The `$sort` stage is similar to the `sort` method. It allows you to sort the documents in the pipeline.
+
+```javascript
+[
+  { $sort: { year: -1 } }
+]
+```
+
+### $limit
+
+The `$limit` stage will limit the number of documents in the pipeline.
+
+```javascript
+[
+  { $limit: 10 }
+]
+```
+
+### $group
+
+The `$group` stage will group the documents in the pipeline by the given criteria.
+
+```javascript
+[
+  { $group: { _id: "$year", count: { $sum: 1 } } }
+]
+```
+
+## Building an Aggregation Pipeline
+
+The easiest way to build your aggregation pipelines is through the Atlas UI (or Compass). You can use the aggregation pipeline builder to build your pipelines visually.
+
+Let's build an aggregation pipelines that finds the country that produced the most movies in 2010.
+
+Still in the movies collection, click on the "Aggregations" tab at the top.
+
+Our first stage will be a `$match` stage. We want to find all the movies from 2010. Click "Add Stage", select `$match` from the dropdown, and enter the following:
+
+```javascript
+{ year: 2010 }
+```
+
+You will see a random sample of 20 documents from the movies collection that match the criteria. Click "Add Stage" to move on to the next stage.
+
+Our next stage will be a `$unwind` stage. We want a document for each country that produced a movie in 2010. Click "Add Stage", select `$unwind` from the dropdown, and enter the following:
+
+```javascript
+{ path: "$countries" }
+```
+
+Next, we'll add a `$group` stage. We want to group the documents by country and count the number of movies produced by each country. Click "Add Stage", select `$group` from the dropdown, and enter the following:
+
+```javascript
+{ _id: "$countries", count: { $sum: 1 } }
+```
+
+Then, we'll add a `$sort` stage. We want to sort the documents by the count in descending order. Click "Add Stage", select `$sort` from the dropdown, and enter the following:
+
+```javascript
+{ count: -1 }
+```
+
+And finally, we'll add a `$limit` stage. We only want the top result. Click "Add Stage", select `$limit` from the dropdown, and enter the following:
+
+```javascript
+1
+```
+
+The output should be a single document with the country that produced the most movies in 2010.
+
+```json
+{
+  "_id": "USA",
+  "count": 412
+}
+```
+
+## Using aggregations in your code
+
+In the aggregation builder, you will also find a "Export To Language" button. From there, you'll be able to export your aggregation pipeline to the language of your choice. You can then copy and paste the code into your application.

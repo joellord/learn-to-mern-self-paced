@@ -1,0 +1,41 @@
+# Solution
+
+Well that was a long of content in a day! I hope you were able to get that last part running. If not, here's the solution.
+
+The only file that would've needed some changes is `/src/pages/Books/index.mjs`. Here's the working code:
+
+<details>
+<summary>Click to expand!</summary>
+<div>
+
+```js
+import React, {useState, useEffect} from "react";
+import Book from "./Book";
+
+const Books = () => {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      const response = await fetch("http://localhost:5050/books").then(resp => resp.json());
+      setBooks(response);
+    };
+    fetchBooks();
+  }, []);
+
+  return (
+    <div>
+      <h2>Books</h2>
+      {books.map((book, index) => {
+        return (
+          <Book key={index} {...book} />
+        )
+      })}
+    </div>
+  );
+}
+
+export default Books;
+```
+</div>
+</details>

@@ -1,0 +1,17 @@
+# 🦸 Advanced - Clean up your code
+
+When you build your API, you will probably have a lot of code. It's important to keep your code clean and organized.
+
+One way to do so, is to list all of our routes in a separate file.
+
+To do so, create a new file called `routes.js` and copy all of your routes in it. Remove the first part of the route. For example, if you had a route called `/books/:id`, change it to `/:id`.
+
+Then, in your `server.js` file, import your routes file and use it as a middleware.
+
+```js
+import routes from './routes.js';
+
+app.use('/api', routes);
+```
+
+Change `/api` to whatever you want your base URL to be. In the previous example, that would be `/books`.

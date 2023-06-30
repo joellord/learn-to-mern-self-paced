@@ -1,0 +1,285 @@
+# Get working!
+
+Time for you to explore the aggregation pipelines. Using the aggregation builder, can you find the following?
+
+In the `sample_mflix` collection:
+
+1. The number of movies released in 2000
+
+<details>
+<summary>Hint</summary>
+<div>Use $match to find the matching documents, then use $count to count the number of documents.</div>
+</details>
+
+<details>
+<summary>Answer</summary>
+<div>
+
+```js
+[
+  {
+    $match:
+      /**
+       * Provide any number of field/order pairs.
+       */
+      {
+        year: 2000,
+      },
+  },
+  {
+    $count:
+      /**
+       * newField: The new field name.
+       */
+      "movies",
+  },
+]
+```
+
+</div>
+</details>
+
+2. The number of movies with a title that starts with "C"
+
+<details>
+<summary>Hint</summary>
+<div>Use $match with a regular expression to find the matching documents, then use $count to count the number of documents.</div>
+</details>
+
+<details>
+<summary>Answer</summary>
+<div>
+
+```js
+[
+  {
+    $match:
+      /**
+       * Provide any number of field/order pairs.
+       */
+      {
+        title: {
+          $regex: /^C/,
+        },
+      },
+  },
+  {
+    $count:
+      /**
+       * newField: The new field name.
+       */
+      "movies",
+  },
+]
+```
+
+</div>
+</details>
+
+3. The movie genre that occured the most in 2000
+
+<details>
+<summary>Hint</summary>
+<div>Use $match to find the matching documents, then use $unwind to unwind the array, then use $sortByCount to count the number of documents.</div>
+</details>
+
+<details>
+<summary>Answer</summary>
+<div>
+
+```js
+[
+  {
+    $match:
+      /**
+       * Provide any number of field/order pairs.
+       */
+      {
+        year: 2000,
+      },
+  },
+  {
+    $unwind:
+      /**
+       * path: The array field path.
+       * includeArrayIndex: Optional.
+       *   The name of a new field to hold
+       *   the array index of the element.
+       * preserveNullAndEmptyArrays: Optional.
+       *   If true, if the path is null,
+       *   missing, or an empty array,
+       *   $unwind outputs the document.
+       *   If false, if path is null,
+       *   missing, or an empty array,
+       *   $unwind does not output a document.
+       */
+      "$genres",
+  },
+  {
+    $sortByCount:
+      /**
+       * expression: The expression to group by.
+       */
+      "$genres",
+  },
+]
+```
+</div>
+</details>
+
+4. The country with the most runtime minutes for comedies released in 2010
+
+<details>
+<summary>Hint</summary>
+<div>Similar to the previous one, but use a $sum operator in your $group stage.</div>
+</details>
+
+<details>
+<summary>Answer</summary>
+<div>
+
+```js
+[
+  {
+    $match:
+      /**
+       * Provide any number of field/order pairs.
+       */
+      {
+        year: 2010,
+        genres: "Comedy",
+      },
+  },
+  {
+    $unwind:
+      /**
+       * path: The array field path.
+       * includeArrayIndex: Optional.
+       *   The name of a new field to hold
+       *   the array index of the element.
+       * preserveNullAndEmptyArrays: Optional.
+       *   If true, if the path is null,
+       *   missing, or an empty array,
+       *   $unwind outputs the document.
+       *   If false, if path is null,
+       *   missing, or an empty array,
+       *   $unwind does not output a document.
+       */
+      "$countries",
+  },
+  {
+    $group:
+      /**
+       * _id: The id of the group.
+       * fieldN: The first field name.
+       */
+      {
+        _id: "$countries",
+        totalMinutes: {
+          $sum: "$runtime",
+        },
+      },
+  },
+  {
+    $sort:
+      /**
+       * Provide any number of field/order pairs.
+       */
+      {
+        totalMinutes: -1,
+      },
+  },
+]
+```
+</div>
+</details>
+
+5. Check if the value from `num_mflix_comments` matches the actual number of comments for the movie "The Godfather"
+
+<details>
+<summary>Hint</summary>
+<div>Use $match to find the matching document, then use a $lookup to join the comments collection and $count to count the number of comments.</div>
+</details>
+
+<details>
+<summary>Answer</summary>
+<div>
+
+```js
+[
+  {
+    $match:
+      /**
+       * Provide any number of field/order pairs.
+       */
+      {
+        title: "The Godfather",
+      },
+  },
+  {
+    $lookup:
+      /**
+       * from: The target collection.
+       * localField: The local join field.
+       * foreignField: The target join field.
+       * as: The name for the results.
+       * pipeline: Optional pipeline to run on the foreign collection.
+       * let: Optional variables to use in the pipeline field stages.
+       */
+      {
+        from: "comments",
+        localField: "_id",
+        foreignField: "movie_id",
+        as: "comments",
+      },
+  },
+  {
+    $addFields:
+      /**
+       * newField: The new field name.
+       * expression: The new field expression.
+       */
+      {
+        commentsCount: {
+          $size: "$comments",
+        },
+      },
+  },
+  {
+    $addFields:
+      /**
+       * newField: The new field name.
+       * expression: The new field expression.
+       */
+      {
+        commentCountMatch: {
+          $eq: [
+            "$num_mflix_comments",
+            "$commentsCount",
+          ],
+        },
+      },
+  },
+  {
+    $project:
+      /**
+       * specifications: The fields to
+       *   include or exclude.
+       */
+      {
+        commentCountMatch: 1,
+      },
+  },
+]
+```
+
+</div>
+</details>
+
+In the `sample_airbnb` collection:
+
+1. The number of listings in the `sample_airbnb` collection
+2. The number of listings with 3 or more bedrooms in Portugal
+3. The number of listings in Brazil with a review score greater than 8
+
+In the `sample_training` collection:

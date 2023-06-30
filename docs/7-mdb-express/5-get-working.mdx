@@ -1,0 +1,96 @@
+# Get working!
+
+Time to draw the rest of the f'ing owl.
+
+Change the routes in your API:
+
+<details>
+<summary>Hint</summary>
+<div>
+Your requests will now be asynchronous, so you'll need to use `async`/`await` or `.then()`/`.catch()` to handle the promises.
+
+You can set the callback as a async function, and then await the database response.
+
+```js
+app.get('/books', async (req, res) => {
+  const books = await db.collection('books').find() //...
+  // ...
+})
+```
+
+</div>
+</details>
+
+- Get a single record
+
+<details>
+<summary>Hint</summary>
+<div>
+Remember to change the `:id` parameter from a string to an `ObjectId` this time. To do so, you will need to import it.
+
+```js
+import { ObjectId } from 'mongodb'
+```
+</div>
+</details>
+
+- Insert new records
+
+<details>
+<summary>Hint</summary>
+<div>
+You'll need to read the body of the request. Make sure you have the `express.json()` middleware in place.
+
+```js
+app.use(express.json())
+```
+
+</div>
+</details>
+
+<details>
+<summary>Test it out</summary>
+<div>
+Test your API using the following curl command:
+
+```sh
+curl -X POST -H "Content-type: application/json" -d '{"title": "Lord of the Rings", "author": "J.R.R. Tolkien", "pages": 1523, "read": false}' localhost:5050/books
+```
+
+</div>
+</details>
+
+- Update a record
+
+<details>
+<summary>Hint</summary>
+<div>
+To update a record, you will need to use the `$set` operator. You can read more about it [here](https://docs.mongodb.com/manual/reference/operator/update/set/).
+</div>
+</details>
+
+<details>
+<summary>Test it out</summary>
+<div>
+Test your API using the following curl command (changing the last part of the URL to an existing ID):
+
+```sh
+curl -X PUT -H "Content-type: application/json" -d '{"read": true}' localhost:5050/books/649dd95cbf8cbb6229b09b93
+```
+
+</div>
+</details>
+
+- Delete a record
+
+<details>
+<summary>Test it out</summary>
+<div>
+Test your API using the following curl command (changing the last part of the URL to an existing ID):
+
+```sh
+curl -X DELETE localhost:5050/books/649dd95cbf8cbb6229b09b93
+```
+
+</div>
+</details>

@@ -1,0 +1,88 @@
+# Querying data
+
+In the "Collections" view, you can see a list of databases and collections in the left sidebar. All the collections whose name starts with `sample_` are sample data collections. You can query these collections to see how the data is structured.
+
+Let's look a the `sample_mflix` database. Click on the `sample_mflix` database in the left sidebar. You should see a list of collections in the database. Click on the `movies` collection. You should see a list of documents in the collection.
+
+Explore the first document. You will notice that there is a number of key-value pairs representing the data about this movie. In addition to strings and numbers, you will also see arrays and sub-documents. Click on `genres` to expand an array. You can also click on `awards` to see an object.
+
+In MongoDB, some relationships are represented as embedded objects or arrays. For example, the `genres` array contains the names of genres that this movie belongs to. The `awards` object contains the number of wins and nominations for this movie.
+
+## Find a specific movie
+
+Above the first document, you will notice a bar with the label "Filter". This is where you can enter a query to find a specific document. Let's find the movie "The Godfather".
+
+In that field, type:
+
+```json
+{ title: "The Godfather" }
+```
+
+Then press the "Enter" key. You should see the document for "The Godfather" in the list. It should be the only returned document since we are looking for an exact match. If we wanted to return all "Godfather" movies, we could use a regular expression:
+
+```json
+{ title: /godfather/i }
+```
+
+The `/godfather/i` is a regular expression that matches any string that contains the word "godfather" (case-insensitive).
+
+## Find movies with a specific genre
+
+You can also query array fields. Let's find all movies that are in the "Drama" genre. In the "Filter" field, type:
+
+```json
+{ genres: "Drama" }
+```
+
+If you expand the `genres` field of the first document, you will see that the array contains "Drama". You can also see that the array contains other genres. This is because we are querying for any movie that has "Drama" as one of its genres.
+
+If you wanted to query for movies that are only in the "Drama" genre, you could use an array as your query parameter:
+
+```json
+{ genres: ["Drama"] }
+```
+
+## Using operators in queries
+
+You can also use operators in your queries. For example, let's find all movies that have a runtime of 180 minutes or more. In the "Filter" field, type:
+
+```json
+{ runtime: { $gte: 180 } }
+```
+
+The `$gte` operator means "greater than or equal to". You can also use the `$gt` operator for "greater than", the `$lte` operator for "less than or equal to", and the `$lt` operator for "less than".
+
+## Multiple query parameters
+
+You can also use multiple query parameters. For example, let's find all movies that are in the "Drama" genre and have a runtime of 180 minutes or more. In the "Filter" field, type:
+
+```json
+{ genres: "Drama", runtime: { $gte: 180 } }
+```
+
+Using multiple properties in your query is the same as using the logical AND operator. You can also use the logical OR operator by using the `$or` operator:
+
+```json
+{ $or: [ { genres: "Drama" }, { runtime: { $gte: 180 } } ] }
+```
+
+## Projecting and sorting
+
+If you click on the "More Options" button, you will see additional fields to project and sort your results. You can use these fields to limit the fields that are returned in your query results and to sort the results.
+
+If you want to return all movies that contain the word "godfather", but only the title and runtime fields, sorted by year in descending order, you could use the following query:
+
+
+```json title="Filter"
+{ title: /godfather/i }
+```
+
+```json title="Project"
+{ title: 1, runtime: 1 }
+```
+
+```json title="Sort"
+{ year: -1 }
+```
+
+The `1` and `-1` values in the "Project" and "Sort" fields indicate whether the field should be included in the results (`1`) or excluded from the results (`-1`). In the "Sort" field, the `1` indicates ascending order and the `-1` indicates descending order.

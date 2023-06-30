@@ -1,0 +1,24 @@
+# Get Working!
+
+Now's the time for you to build your first React application.
+
+Thing about that application idea you had at the beginning. Try to visualize the UI. What components will you need? What data will you need to store? What will the user be able to do?
+
+## Structuring the code
+First, change your `App.js` file to import a `Layout` component. This will be the root component of your application. It will contain the header, footer, and main content area.
+
+In the `src` directory, create a new directory called `components`. Inside that directory, create a new file called `Layout.js`. This will be the component that you import into `App.js`.
+
+In the components folder, create a new file called `Header.js`. This will be the component that you import into `Layout.js`.
+
+Also create a `src/pages` folder. In here, put your main page components. For example, if you have a page for viewing a list of users, create a `Users` folder in here. Create an `index.js` file in here. This will be the component that you import into `Layout.js`.
+
+Any sub components that are only used by the `Users` page should be put in a `components` folder inside the `Users` folder.
+
+Use an array at the top of the `index.js` file to hold all the data for the page. This will be the data that you pass to the components. For example, if you have a list of users, you would put that list in the array. If you have a list of products, you would put that list in the array.
+
+Eventually, this array will be populated from an API call. For now, just put some dummy data in there.
+
+## Your Goal
+
+Take until the break to create your main layout. This should include a header and the main content area. The main content area should contain a list of items. Each item should have a number of properties.

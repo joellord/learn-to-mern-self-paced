@@ -1,0 +1,41 @@
+# Components
+
+Components are the building blocks of React applications. They are reusable pieces of code that can be used to build a user interface.
+
+## Adding props
+
+We can also make our components reusable by adding props to them. Let's add a title to our header.
+
+In the `Header.js` file, change the `Header()` function to look like this:
+
+```js
+const Header = (props) => {
+  return (
+    <header className="App-header">
+      <p>
+        {props.title}
+      </p>
+    </header>
+  );
+}
+```
+
+Now, in the `App.js` file, change the `Header` component to look like this:
+
+```js
+<Header title="Hello World!" />
+```
+
+Now look at your browser. You should see the same thing again, but this time, we have our header in its own component, and we can change the title by changing the `title` prop.
+
+:::info
+Try changing your title to something else in the App.js file, and check out the result.
+:::
+
+## Passing data to components
+
+One thing to note about React is that you can only pass data to components in one direction. This means that you can pass data from a parent component to a child component, but you can't pass data from a child component to a parent component.
+
+:::caution
+This is called one-way binding. It's a very important concept in React, and it's something that you'll need to understand if you want to build React applications.
+:::

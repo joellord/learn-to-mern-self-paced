@@ -1,0 +1,200 @@
+# Solutions
+
+Are you already looking at this solution? If so, you might as well read it. I'll try to explain my thought process as I go along.
+
+## Create the server
+
+I like to start with a server that uses a single route. This helps me get the server up and running quickly. I can then test that the server is working before I start adding more routes.
+
+:::tip
+In this example, I'm using an environment variable to set the port. This allows me to use a different port when I deploy the app to my production server. I default it to 5050 if the environment variable is not set.
+:::
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```js
+import express from "express";
+import cors from "cors";
+
+const port = process.env.PORT || 5050;
+const app = express();
+app.use(cors());
+
+app.get("/", (req, res) => {
+  const serverStatus = {
+    status: "running",
+    port: port,
+    timestamp: new Date().getTime(),
+    message: "Welcome to my book API"
+  };
+  res.json(serverStatus).status(200);
+});
+
+app.listen(port, () => console.log(`Server running on port ${port}`));
+```
+
+
+</div>
+</details>
+
+You should be able to test it out using curl.
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```bash
+curl http://localhost:5050
+```
+
+</div>
+</details>
+
+## Add your "database"
+
+Add a variable that contains all of your entries. In this case, I'm using an array that contains a list of books.
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```js
+const books = [
+  {
+    id: 0,
+    title: "The Alchemist",
+    author: "Paulo Coelho",
+    description: "A book about following your dreams",
+    pages: 163,
+    currentPage: 163,
+    read: true
+  },
+  {
+    id: 1,
+    title: "The Prophet",
+    author: "Kahlil Gibran",
+    description: "A story about a prophet",
+    pages: 107,
+    currentPage: 23,
+    read: false
+  },
+  {
+    id: 2,
+    title: "Thus Spoke Zarathustra",
+    author: "Friedrich Nietzsche",
+    description: "This book is about the fictitious travels and speeches of Zarathustra.",
+    pages: 352,
+    currentPage: 52,
+    read: false
+  }
+];
+```
+
+</div>
+</details>
+
+## Get all records
+
+Start with a route that lists all the records. This is usually the easiest, especially when you're using a real database. In this case, we can just return the array of books.
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```js
+app.get("/books", (req, res) => {
+  res.json(books).status(200);
+});
+```
+
+</div>
+</details>
+
+## Get a single record
+
+Next, add a route that returns a single record. In this case, we can use the id to find the book in the array. To keep it simple, the id is the index of the book in the array.
+
+:::caution
+This is not a good idea in a real application. You should use a unique id that is not the index of the array. Otherwise, if you delete a record, the index will change and you'll have to update all the other records.
+:::
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```js
+app.get("/books/:id", (req, res) => {
+  const book = books[parseInt(req.params.id)];
+  res.json(book).status(200);
+});
+```
+
+</div>
+</details>
+
+## Add a record
+
+Now, let's add a route that allows us to add a record. In this case, we'll just add the book to the array. The id will be the length of the array.
+
+:::caution
+Again, this is not a good idea in a real application. Once your start deleting records, the id will no longer be the length of the array.
+:::
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```js
+app.post("/books", (req, res) => {
+  let book = req.body;
+  books.id = books.length;
+  books.push(book);
+  res.json(book).status(201);
+});
+```
+
+</div>
+</details>
+
+## Update a record
+
+Next, let's add a route that allows us to update a record. In this case, we'll just replace the book in the array with the new book.
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```js
+app.put("/books/:id", (req, res) => {
+  let book = req.body;
+  books[parseInt(req.params.id)] = book;
+  res.json(book).status(200);
+});
+```
+
+</div>
+</details>
+
+## Delete a record
+
+Finally, let's add a route that allows us to delete a record. In this case, we'll just remove the book from the array.
+
+:::danger
+In case I haven't emphasized this enough yet, this is not a good idea in a real application. You should use a unique id that is not the index of the array. Otherwise, if you delete a record, the index will change and you'll have to update all the other records, which will cause all sorts of other issues.
+:::
+
+<details>
+<summary>Click here to see the code</summary>
+<div>
+
+```js
+app.delete("/books/:id", (req, res) => {
+  books.splice(parseInt(req.params.id), 1);
+  res.status(204).send();
+});
+```
+
+</div>
+</details>

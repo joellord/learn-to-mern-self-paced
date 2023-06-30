@@ -1,0 +1,66 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Querying with code
+
+Obviously, you'll want to access the data in your collections using your programming language of choice. The syntax is very similar to what you've just seen.
+
+<Tabs>
+<TabItem value="js" title="JavaScript">
+
+```javascript
+const query = { title: /godfather/i };
+const options = { projection: { title: 1, runtime: 1}, sort: { year: -1 } };
+const movies = collection.find(query, options).toArray();
+```
+
+</TabItem>
+<TabItem value="csharp" title="C#">
+
+```csharp
+var query = Builders<BsonDocument>.Filter.Regex("title", new BsonRegularExpression("godfather", "i"));
+var options = new FindOptions<BsonDocument, BsonDocument> { Projection = "{ title: 1, runtime: 1 }", Sort = "{ year: -1 }" };
+var movies = collection.Find(query, options).ToList();
+```
+
+</TabItem>
+<TabItem value="java" title="Java">
+
+```java
+BsonRegularExpression regex = new BsonRegularExpression("godfather", "i");
+BsonDocument query = new BsonDocument("title", regex);
+BsonDocument projection = new BsonDocument("title", 1).append("runtime", 1);
+BsonDocument sort = new BsonDocument("year", -1);
+FindOptions<BsonDocument> options = new FindOptions<BsonDocument>().projection(projection).sort(sort);
+List<BsonDocument> movies = collection.find(query).into(new ArrayList<>());
+```
+
+</TabItem>
+<TabItem value="py" title="Python">
+
+```python
+query = { "title": re.compile("godfather", re.IGNORECASE) }
+options = { "projection": { "title": 1, "runtime": 1}, "sort": { "year": -1 } }
+movies = list(collection.find(query, options))
+```
+
+</TabItem>
+<TabItem value="php" title="PHP">
+
+```php
+$query = [ "title" => new MongoDB\BSON\Regex("godfather", "i") ];
+$options = [ "projection" => [ "title" => 1, "runtime" => 1], "sort" => [ "year" => -1 ] ];
+$movies = $collection->find($query, $options)->toArray();
+```
+
+</TabItem>
+<TabItem value="ruby" title="Ruby">
+
+```ruby
+query = { "title" => /godfather/i }
+options = { "projection" => { "title" => 1, "runtime" => 1}, "sort" => { "year" => -1 } }
+movies = collection.find(query, options).to_a
+```
+
+</TabItem>
+</Tabs>

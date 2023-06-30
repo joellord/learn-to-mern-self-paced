@@ -1,0 +1,47 @@
+# React states
+
+In React, we can store data in a component's state. The state is an object that contains the data we want to store. We can access the state using the `useState` hook.
+
+When the state of the component changes, it will trigger a re-render of the component. This means that the component will be rendered again, and the new state will be used to render the component.
+
+Let's see an example. Say we want to create a counter. One could design a component that looks like this.
+
+```jsx live
+function Counter() {
+  let count = 0;
+
+  handleCounterClick = () => {
+    count++;
+  }
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={handleCounterClick}>Increment</button>
+    </div>
+  );
+}
+```
+
+This won't work in React. Instead, you'll need to declare the `count` variable as a state. This can be done using the `useState` hook. You will also need to use the `setCount` function to update the state.
+
+```jsx live
+function Counter() {
+  let [count, setCount] = useState(0);
+
+  handleCounterClick = () => {
+    setCount(count + 1);
+  }
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={handleCounterClick}>Increment</button>
+    </div>
+  );
+}
+```
+
+:::tip
+Exercise that muscle memory. Try to change the first example so that it now uses the `useState` hook.
+:::
