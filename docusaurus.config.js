@@ -4,7 +4,7 @@
 // Change here to customise config
 
 // Name of the Github Repo
-const workshopName = 'mern-workshop';
+const workshopName = 'learn-to-mern-self-paced';
 
 // Main page config
 const title = "MERN Workshop";
@@ -79,10 +79,10 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: `${title}`,
   tagline: `${tagLine}`,
-  url: `https://${workshopName}.github.io`,
+  url: `https://joellord.github.io`,
   baseUrl: `/${workshopName}/`,
-  projectName: 'mongodb-developer.github.io',
-  organizationName: 'mongodb-developer',
+  projectName: 'joellord.github.io',
+  organizationName: 'joellord',
   trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
