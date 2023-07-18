@@ -14,24 +14,24 @@ const startButtonTitle = "Get MERNing!";
 // Main Page Features
 const featureList = [
   {
-    title: 'A 100% Meta Workshop on how to build workshops',
+    title: 'Learn how to build a MERN app',
     illustration: 'img/docu.svg',
     description: `
-        Built using Docusaurus2
+        In this self-paced workshop, you will learn everything you need to get started with the MERN stack.
     `,
   },
   {
-    title: 'Quick, no-nonsense approach',
+    title: 'Self Paced',
     illustration: 'img/typing.gif',
     description: `
-        We want to help you build workshops quickly
+        Do the workshop at your own pace. You can stop and start at any time.
     `,
   },
   {
-    title: 'Expaaaandable',
+    title: 'Follow Along',
     illustration: 'img/expanded-leafy.png',
     description: `
-        Can't wait for your PRs!
+        Or follow along as the instructor builds the app.
     `,
   },
 ];
@@ -48,7 +48,7 @@ const utmParams = `?utm_campaign=devrel&utm_source=workshop&utm_medium=cta&utm_c
 const footerLinks = [
   {
     label: 'Try MongoDB Atlas',
-    href: `https://www.mongodb.com/try${utmParams}`,
+    href: `https://www.mongodb.com/try/${utmParams}`,
   },
   {
     label: 'Forums',
